@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Keranjang - STORESKULLHOST</title>
-  <link rel="stylesheet" href="../style.css" />
-  <script defer src="../supabase.js"></script>
-  <script defer src="user.js"></script>
+  <meta charset="UTF-8">
+  <title>Keranjang | StoreSkullHost</title>
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
   <nav>
-    <ul>
-      <li><a href="dashboard.html">Beranda</a></li>
-      <li><a href="keranjang.html">Keranjang</a></li>
-      <li><a href="history.html">History</a></li>
-      <li><a href="logout.html">Logout</a></li>
-    </ul>
+    <a href="dashboard.html">Beranda</a>
+    <a href="keranjang.html">Keranjang</a>
+    <a href="history.html">History</a>
+    <a href="logout.html">Logout</a>
   </nav>
 
-  <header><h1>Keranjang</h1></header>
+  <main>
+    <h2>Keranjang Saya</h2>
+    <div id="cart-items"></div>
+    <button id="checkout-btn">Checkout</button>
+  </main>
 
-  <section id="cart-list"></section>
-  <button id="checkout-btn">Checkout</button>
+  <footer>@2025 SKULLHOSTING | StoreSkullHost</footer>
 
-  <footer>@2025SKULLHOSTING</footer>
+  <script type="module" src="user.js"></script>
 </body>
 </html>
