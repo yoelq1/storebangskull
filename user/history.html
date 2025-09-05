@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>History - STORESKULLHOST</title>
-  <link rel="stylesheet" href="../style.css" />
-  <script defer src="../supabase.js"></script>
-  <script defer src="user.js"></script>
+  <meta charset="UTF-8">
+  <title>History | StoreSkullHost</title>
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
   <nav>
-    <ul>
-      <li><a href="dashboard.html">Beranda</a></li>
-      <li><a href="keranjang.html">Keranjang</a></li>
-      <li><a href="history.html">History</a></li>
-      <li><a href="logout.html">Logout</a></li>
-    </ul>
+    <a href="dashboard.html">Beranda</a>
+    <a href="keranjang.html">Keranjang</a>
+    <a href="history.html">History</a>
+    <a href="logout.html">Logout</a>
   </nav>
 
-  <header><h1>History Transaksi</h1></header>
+  <main>
+    <h2>History Transaksi</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nama Produk</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="history-list"></tbody>
+    </table>
+  </main>
 
-  <section id="history-list"></section>
+  <footer>@2025 SKULLHOSTING | StoreSkullHost</footer>
 
-  <footer>@2025SKULLHOSTING</footer>
+  <script type="module" src="user.js"></script>
 </body>
 </html>
