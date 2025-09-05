@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Logout</title>
-  <script defer src="../supabase.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      await supabase.auth.signOut();
-      window.location.href = "../index.html";
-    });
-  </script>
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-  <p>Logging out...</p>
+  <h2>Logout...</h2>
+
+  <script type="module">
+    import { supabase } from '../supabase.js';
+    (async () => {
+      await supabase.auth.signOut();
+      window.location.href = "../index.html";
+    })();
+  </script>
 </body>
 </html>
