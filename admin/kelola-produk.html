@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kelola Produk - STORESKULLHOST</title>
+  <link rel="stylesheet" href="../style.css" />
+  <script defer src="../supabase.js"></script>
+  <script defer src="admin.js"></script>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="dashboard.html">Beranda</a></li>
+      <li><a href="kelola-produk.html">Kelola Produk</a></li>
+      <li><a href="kelola-pesanan.html">Kelola Pesanan</a></li>
+      <li><a href="logout.html">Logout</a></li>
+    </ul>
+  </nav>
+
+  <header><h1>Kelola Produk</h1></header>
+
+  <section>
+    <form id="add-product-form">
+      <input type="text" id="product-name" placeholder="Nama Produk" required />
+      <input type="number" id="product-price" placeholder="Harga" required />
+      <input type="text" id="product-image" placeholder="URL Gambar" required />
+      <button type="submit">Tambah Produk</button>
+    </form>
+  </section>
+
+  <section>
+    <table>
+      <thead>
+        <tr>
+          <th>Nama Item</th>
+          <th>Harga</th>
+          <th>Gambar</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="product-table"></tbody>
+    </table>
+  </section>
+
+  <footer>@2025SKULLHOSTING</footer>
+</body>
+</html>
