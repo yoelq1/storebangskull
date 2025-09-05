@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Kelola Pesanan | StoreSkullHost</title>
+  <title>Kelola Pesanan</title>
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -13,53 +13,27 @@
     <a href="logout.html">Logout</a>
   </nav>
 
-  <main>
-    <h2>Kelola Pesanan</h2>
+  <h1>Kelola Pesanan</h1>
 
-    <h3>Pending</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Qty</th>
-          <th>Subtotal</th>
-          <th>Pembeli</th>
-          <th>Kontak</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="pending-orders"></tbody>
-    </table>
+  <h2>Pending</h2>
+  <table border="1">
+    <thead><tr><th>ID</th><th>User</th><th>WhatsApp</th><th>Produk</th><th>Qty</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+    <tbody id="pending-orders"></tbody>
+  </table>
 
-    <h3>Done</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Qty</th>
-          <th>Subtotal</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="done-orders"></tbody>
-    </table>
+  <h2>Done</h2>
+  <table border="1">
+    <thead><tr><th>ID</th><th>User</th><th>WhatsApp</th><th>Produk</th><th>Qty</th><th>Total</th><th>Status</th></tr></thead>
+    <tbody id="done-orders"></tbody>
+  </table>
 
-    <h3>Batal</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Qty</th>
-          <th>Subtotal</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="canceled-orders"></tbody>
-    </table>
-  </main>
+  <h2>Batal</h2>
+  <table border="1">
+    <thead><tr><th>ID</th><th>User</th><th>WhatsApp</th><th>Produk</th><th>Qty</th><th>Total</th><th>Status</th></tr></thead>
+    <tbody id="canceled-orders"></tbody>
+  </table>
 
-  <footer>@2025 SKULLHOSTING | StoreSkullHost</footer>
-
+  <script type="module" src="admin.js"></script>
   <script type="module" src="admin-orders.js"></script>
 </body>
 </html>
