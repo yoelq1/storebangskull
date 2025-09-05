@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kelola Pesanan - STORESKULLHOST</title>
+  <link rel="stylesheet" href="../style.css" />
+  <script defer src="../supabase.js"></script>
+  <script defer src="admin-orders.js"></script>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="dashboard.html">Beranda</a></li>
+      <li><a href="kelola-produk.html">Kelola Produk</a></li>
+      <li><a href="kelola-pesanan.html">Kelola Pesanan</a></li>
+      <li><a href="logout.html">Logout</a></li>
+    </ul>
+  </nav>
+
+  <header><h1>Kelola Pesanan</h1></header>
+
+  <h2>Pending</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Produk</th>
+        <th>Qty</th>
+        <th>Subtotal</th>
+        <th>User</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="pending-orders"></tbody>
+  </table>
+
+  <h2>Done</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Produk</th>
+        <th>Qty</th>
+        <th>Subtotal</th>
+        <th>User</th>
+      </tr>
+    </thead>
+    <tbody id="done-orders"></tbody>
+  </table>
+
+  <h2>Batal</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Produk</th>
+        <th>Qty</th>
+        <th>Subtotal</th>
+        <th>User</th>
+      </tr>
+    </thead>
+    <tbody id="cancel-orders"></tbody>
+  </table>
+
+  <footer>@2025SKULLHOSTING</footer>
+</body>
+</html>
