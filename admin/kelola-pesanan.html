@@ -1,65 +1,65 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kelola Pesanan - STORESKULLHOST</title>
-  <link rel="stylesheet" href="../style.css" />
-  <script defer src="../supabase.js"></script>
-  <script defer src="admin-orders.js"></script>
+  <meta charset="UTF-8">
+  <title>Kelola Pesanan | StoreSkullHost</title>
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
   <nav>
-    <ul>
-      <li><a href="dashboard.html">Beranda</a></li>
-      <li><a href="kelola-produk.html">Kelola Produk</a></li>
-      <li><a href="kelola-pesanan.html">Kelola Pesanan</a></li>
-      <li><a href="logout.html">Logout</a></li>
-    </ul>
+    <a href="dashboard.html">Beranda</a>
+    <a href="kelola-produk.html">Kelola Produk</a>
+    <a href="kelola-pesanan.html">Kelola Pesanan</a>
+    <a href="logout.html">Logout</a>
   </nav>
 
-  <header><h1>Kelola Pesanan</h1></header>
+  <main>
+    <h2>Kelola Pesanan</h2>
 
-  <h2>Pending</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Produk</th>
-        <th>Qty</th>
-        <th>Subtotal</th>
-        <th>User</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
-    <tbody id="pending-orders"></tbody>
-  </table>
+    <h3>Pending</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+          <th>Pembeli</th>
+          <th>Kontak</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="pending-orders"></tbody>
+    </table>
 
-  <h2>Done</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Produk</th>
-        <th>Qty</th>
-        <th>Subtotal</th>
-        <th>User</th>
-      </tr>
-    </thead>
-    <tbody id="done-orders"></tbody>
-  </table>
+    <h3>Done</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="done-orders"></tbody>
+    </table>
 
-  <h2>Batal</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Produk</th>
-        <th>Qty</th>
-        <th>Subtotal</th>
-        <th>User</th>
-      </tr>
-    </thead>
-    <tbody id="cancel-orders"></tbody>
-  </table>
+    <h3>Batal</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="canceled-orders"></tbody>
+    </table>
+  </main>
 
-  <footer>@2025SKULLHOSTING</footer>
+  <footer>@2025 SKULLHOSTING | StoreSkullHost</footer>
+
+  <script type="module" src="admin-orders.js"></script>
 </body>
 </html>
