@@ -1,67 +1,60 @@
-// =======================
-// ADMIN PESANAN SCRIPT
-// =======================
+import { supabase } from '../supabase.js';
 
-const pendingOrders = document.getElementById("pending-orders");
-const doneOrders = document.getElementById("done-orders");
-const cancelOrders = document.getElementById("cancel-orders");
-
-async function fetchOrders() {
-  const { data, error } = await supabase
-    .from("orders")
-    .select("*, products(name), profiles(username)")
-    .order("id", { ascending: false });
-
-  if (error) console.error(error);
-
-  if (pendingOrders && doneOrders && cancelOrders) {
-    pendingOrders.innerHTML = "";
-    doneOrders.innerHTML = "";
-    cancelOrders.innerHTML = "";
-
-    data.forEach((o) => {
-      if (o.status === "pending") {
-        pendingOrders.innerHTML += `
-          <tr>
-            <td>${o.products.name}</td>
-            <td>${o.qty}</td>
-            <td>Rp ${o.subtotal}</td>
-            <td>${o.username} (${o.phone})</td>
-            <td>
-              <button onclick="updateOrder(${o.id}, 'done')">Done</button>
-              <button onclick="updateOrder(${o.id}, 'batal')">Batal</button>
-            </td>
-          </tr>`;
-      } else if (o.status === "done") {
-        doneOrders.innerHTML += `
-          <tr>
-            <td>${o.products.name}</td>
-            <td>${o.qty}</td>
-            <td>Rp ${o.subtotal}</td>
-            <td>${o.username} (${o.phone})</td>
-          </tr>`;
-      } else if (o.status === "batal") {
-        cancelOrders.innerHTML += `
-          <tr>
-            <td>${o.products.name}</td>
-            <td>${o.qty}</td>
-            <td>Rp ${o.subtotal}</td>
-            <td>${o.username} (${o.phone})</td>
-          </tr>`;
-      }
-    });
+async function loadOrders() {
+  const { data, error } = await supabase.from("orders").select("*");
+  if (error) {
+    alert("Gagal load pesanan: " + error.message);
+    return;
   }
+
+  const pending = data.filter(o => o.status === "pending");
+  const done = data.filter(o => o.status === "done");
+  const canceled = data.filter(o => o.status === "batal");
+
+  document.getElementById("pending-orders").innerHTML = pending.map(o => `
+    <tr>
+      <td>${o.product_name}</td>
+      <td>${o.qty}</td>
+      <td>Rp ${o.subtotal}</td>
+      <td>${o.buyer_name}</td>
+      <td>${o.buyer_phone} / ${o.buyer_telegram || "-"}</td>
+      <td>
+        <button onclick="updateStatus(${o.id}, 'done')">Done</button>
+        <button onclick="updateStatus(${o.id}, 'batal')">Batal</button>
+      </td>
+    </tr>
+  `).join("");
+
+  document.getElementById("done-orders").innerHTML = done.map(o => `
+    <tr>
+      <td>${o.product_name}</td>
+      <td>${o.qty}</td>
+      <td>Rp ${o.subtotal}</td>
+      <td>DONE</td>
+    </tr>
+  `).join("");
+
+  document.getElementById("canceled-orders").innerHTML = canceled.map(o => `
+    <tr>
+      <td>${o.product_name}</td>
+      <td>${o.qty}</td>
+      <td>Rp ${o.subtotal}</td>
+      <td>BATAL</td>
+    </tr>
+  `).join("");
 }
 
-async function updateOrder(id, status) {
-  const { error } = await supabase.from("orders").update({ status }).eq("id", id);
-  if (error) console.error(error);
-}
+window.updateStatus = async (id, status) => {
+  await supabase.from("orders").update({ status }).eq("id", id);
+  loadOrders();
+};
 
-if (pendingOrders) {
-  fetchOrders();
-  supabase
-    .channel("orders")
-    .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, fetchOrders)
-    .subscribe();
-}
+// Load awal
+loadOrders();
+
+// Realtime listener
+supabase.channel("orders-realtime")
+  .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, payload => {
+    loadOrders();
+  })
+  .subscribe();
