@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StoreSkull - Login / Register</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/auth.js" defer></script>
+</head>
+<body>
+  <main class="auth-page">
+    <div class="auth-card">
+      <h1>StoreSkull</h1>
+      <p class="muted">Masuk atau daftar untuk mulai belanja</p>
+
+      <section id="login-section">
+        <h2>Login</h2>
+        <form id="login-form" class="form">
+          <input id="login-email" type="email" placeholder="Email" required />
+          <input id="login-password" type="password" placeholder="Password" required />
+          <button type="submit" class="btn">Login</button>
+        </form>
+      </section>
+
+      <hr>
+
+      <section id="register-section">
+        <h2>Register</h2>
+        <form id="register-form" class="form">
+          <input id="reg-username" type="text" placeholder="Username" required />
+          <input id="reg-email" type="email" placeholder="Email" required />
+          <input id="reg-password" type="password" placeholder="Password (min 6)" minlength="6" required />
+          <input id="reg-phone" type="text" placeholder="No. WA (opsional)" />
+          <button type="submit" class="btn outline">Daftar</button>
+        </form>
+      </section>
+
+      <p class="small muted">Admin? masuk lewat <a href="admin.html">Admin Panel</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">@2025SKULLHOSTING • STORESKULL</footer>
+</body>
+</html>
