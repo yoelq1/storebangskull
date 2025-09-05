@@ -1,24 +1,38 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - STORESKULLHOST</title>
-  <link rel="stylesheet" href="../style.css" />
-  <script defer src="../supabase.js"></script>
-  <script defer src="user.js"></script>
+  <meta charset="UTF-8">
+  <title>Login | StoreSkullHost</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>STORESKULLHOST</h1>
-    <h2>Login</h2>
+  <div class="auth-container">
+    <h2>Login User</h2>
     <form id="login-form">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
       <button type="submit">Login</button>
     </form>
-    <p>Belum punya akun? <a href="register.html">Daftar</a></p>
-    <div id="msg"></div>
+    <p>Belum punya akun? <a href="register.html">Register</a></p>
   </div>
+
+  <script type="module">
+    import { supabase } from './supabase.js';
+
+    const form = document.getElementById("login-form");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        alert("Login gagal: " + error.message);
+      } else {
+        alert("Berhasil login!");
+        window.location.href = "user/dashboard.html";
+      }
+    });
+  </script>
 </body>
 </html>
