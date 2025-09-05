@@ -1,191 +1,111 @@
-// =======================
-// USER SIDE SCRIPT
-// =======================
+import { supabase } from '../supabase.js';
 
-// LOGIN
-const loginForm = document.getElementById("login-form");
-if (loginForm) {
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      document.getElementById("msg").innerText = error.message;
-    } else {
-      window.location.href = "dashboard.html";
-    }
-  });
+async function getUser() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) window.location.href = "../index.html";
+  return user;
 }
 
-// REGISTER
-const registerForm = document.getElementById("register-form");
-if (registerForm) {
-  registerForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+// === DASHBOARD: Load produk & announcement ===
+if (document.getElementById("product-list")) {
+  const { data: products } = await supabase.from("products").select("*");
+  const list = document.getElementById("product-list");
+  list.innerHTML = products.map(p => `
+    <div class="card">
+      <img src="${p.image_url}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p>Rp ${p.price}</p>
+      <button onclick="buyNow(${p.id})">BUY</button>
+      <button onclick="addToCart(${p.id})">+ Keranjang</button>
+    </div>
+  `).join("");
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { username, role: "user" } },
-    });
-
-    if (error) {
-      document.getElementById("msg").innerText = error.message;
-    } else {
-      document.getElementById("msg").innerText = "Registrasi berhasil! Silakan login.";
-    }
-  });
+  // Announcement
+  const { data: ann } = await supabase.from("announcements").select("*").single();
+  if (ann) document.getElementById("announcement").innerText = ann.message;
 }
 
-// DASHBOARD (Produk & Announcement)
-const productList = document.getElementById("product-list");
-const announcement = document.getElementById("announcement");
+// === Keranjang ===
+window.addToCart = async (productId) => {
+  const user = await getUser();
+  await supabase.from("cart").insert([{ user_id: user.id, product_id: productId, qty: 1 }]);
+  alert("Ditambahkan ke keranjang!");
+};
 
-async function fetchProducts() {
-  const { data, error } = await supabase.from("products").select("*");
-  if (error) console.error(error);
-  if (productList) {
-    productList.innerHTML = data
-      .map(
-        (p) => `
-        <div class="card">
-          <img src="${p.image_url}" alt="${p.name}" />
-          <h3>${p.name}</h3>
-          <p>Rp ${p.price}</p>
-          <button onclick="buyNow(${p.id}, '${p.name}', ${p.price})">Buy</button>
-          <button onclick="addToCart(${p.id}, '${p.name}', ${p.price})">+ Keranjang</button>
-        </div>`
-      )
-      .join("");
-  }
-}
-
-async function fetchAnnouncement() {
-  const { data, error } = await supabase.from("announcements").select("*").limit(1).order("id", { ascending: false });
-  if (!error && data.length > 0 && announcement) {
-    announcement.innerHTML = `<div class="announcement">${data[0].text}</div>`;
-  }
-}
-
-if (productList) {
-  fetchProducts();
-  fetchAnnouncement();
-
-  supabase
-    .channel("products")
-    .on("postgres_changes", { event: "*", schema: "public", table: "products" }, fetchProducts)
-    .subscribe();
-}
-
-// KERANJANG
-const cartList = document.getElementById("cart-list");
-
-function addToCart(id, name, price) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.push({ id, name, price, qty: 1 });
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Produk ditambahkan ke keranjang!");
-}
-
-if (cartList) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cartList.innerHTML = cart
-    .map(
-      (c, i) => `
-      <div class="cart-item">
-        ${c.name} - Rp ${c.price} x 
-        <input type="number" value="${c.qty}" min="1" onchange="updateQty(${i}, this.value)" />
-      </div>`
-    )
-    .join("");
-}
-
-function updateQty(index, qty) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart[index].qty = parseInt(qty);
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
-
-// Checkout
-const checkoutBtn = document.getElementById("checkout-btn");
-if (checkoutBtn) {
-  checkoutBtn.addEventListener("click", async () => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cart.length === 0) return alert("Keranjang kosong");
-
-    let phone = prompt("Masukkan nomor WhatsApp:");
-    let username = prompt("Masukkan username:");
-
-    const { data: user } = await supabase.auth.getUser();
+if (document.getElementById("cart-items")) {
+  const user = await getUser();
+  const { data: cart } = await supabase.from("cart").select("id, qty, products(name, price)").eq("user_id", user.id);
+  const div = document.getElementById("cart-items");
+  div.innerHTML = cart.map(c => `
+    <div>
+      ${c.products.name} - Rp ${c.products.price} x ${c.qty}
+    </div>
+  `).join("");
+  document.getElementById("checkout-btn").onclick = async () => {
+    let nama = prompt("Masukkan Nama");
+    let telp = prompt("Masukkan Nomor WhatsApp");
+    let telegram = prompt("Masukkan Telegram (opsional)") || "";
 
     for (let item of cart) {
-      await supabase.from("orders").insert([
-        {
-          user_id: user.user.id,
-          product_id: item.id,
-          qty: item.qty,
-          subtotal: item.price * item.qty,
-          phone,
-          username,
-          status: "pending",
-        },
-      ]);
+      await supabase.from("orders").insert([{
+        user_id: user.id,
+        product_name: item.products.name,
+        qty: item.qty,
+        subtotal: item.products.price * item.qty,
+        buyer_name: nama,
+        buyer_phone: telp,
+        buyer_telegram: telegram,
+        status: "pending"
+      }]);
     }
-    localStorage.removeItem("cart");
-    alert("Pesanan berhasil dibuat!");
+    await supabase.from("cart").delete().eq("user_id", user.id);
+    alert("Pesanan dikirim!");
     window.location.href = "history.html";
-  });
+  };
 }
 
-// HISTORY
-const historyList = document.getElementById("history-list");
-async function fetchHistory() {
-  const { data: user } = await supabase.auth.getUser();
-  const { data, error } = await supabase.from("orders").select("*, products(name)").eq("user_id", user.user.id);
-  if (error) console.error(error);
-  if (historyList) {
-    historyList.innerHTML = data
-      .map(
-        (o) => `
-      <div class="history-item">
-        ${o.products.name} - Qty: ${o.qty} - Rp ${o.subtotal} - Status: ${o.status}
-      </div>`
-      )
-      .join("");
-  }
-}
+// === History ===
+if (document.getElementById("history-list")) {
+  const user = await getUser();
+  const { data: orders } = await supabase.from("orders").select("*").eq("user_id", user.id);
+  const tbody = document.getElementById("history-list");
+  tbody.innerHTML = orders.map(o => `
+    <tr>
+      <td>${o.product_name}</td>
+      <td>${o.qty}</td>
+      <td>Rp ${o.subtotal}</td>
+      <td>${o.status}</td>
+    </tr>
+  `).join("");
 
-if (historyList) {
-  fetchHistory();
-  supabase
-    .channel("orders")
-    .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, fetchHistory)
+  supabase.channel('orders-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'orders', filter: `user_id=eq.${user.id}` },
+      payload => {
+        location.reload();
+      })
     .subscribe();
 }
 
-// BUY langsung
-async function buyNow(id, name, price) {
-  let phone = prompt("Masukkan nomor WhatsApp:");
-  let username = prompt("Masukkan username:");
-  const { data: user } = await supabase.auth.getUser();
+// === BUY langsung ===
+window.buyNow = async (productId) => {
+  const user = await getUser();
+  const { data: product } = await supabase.from("products").select("*").eq("id", productId).single();
 
-  await supabase.from("orders").insert([
-    {
-      user_id: user.user.id,
-      product_id: id,
-      qty: 1,
-      subtotal: price,
-      phone,
-      username,
-      status: "pending",
-    },
-  ]);
+  let nama = prompt("Masukkan Nama");
+  let telp = prompt("Masukkan Nomor WhatsApp");
+  let telegram = prompt("Masukkan Telegram (opsional)") || "";
 
-  alert("Pesanan berhasil dibuat!");
+  await supabase.from("orders").insert([{
+    user_id: user.id,
+    product_name: product.name,
+    qty: 1,
+    subtotal: product.price,
+    buyer_name: nama,
+    buyer_phone: telp,
+    buyer_telegram: telegram,
+    status: "pending"
+  }]);
+
+  alert("Pesanan dikirim!");
   window.location.href = "history.html";
-}
+};
