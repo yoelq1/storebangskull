@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <title>Kelola Produk</title>
@@ -13,33 +13,25 @@
     <a href="logout.html">Logout</a>
   </nav>
 
-  <main>
-    <h2>Kelola Produk</h2>
+  <h1>Kelola Produk</h1>
 
-    <form id="addProductForm">
-      <input type="text" id="productName" placeholder="Nama Produk" required>
-      <input type="number" id="productPrice" placeholder="Harga" required>
-      <input type="text" id="productImage" placeholder="URL Gambar" required>
-      <button type="submit">Tambahkan Produk</button>
-    </form>
+  <form id="add-product-form">
+    <input type="text" id="product-name" placeholder="Nama Produk" required>
+    <input type="number" id="product-price" placeholder="Harga" required>
+    <input type="text" id="product-image" placeholder="URL Gambar" required>
+    <button type="submit">Tambahkan Produk</button>
+  </form>
 
-    <h3>Daftar Produk</h3>
-    <table id="productsTable">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nama</th>
-          <th>Harga</th>
-          <th>Gambar</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </main>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th><th>Nama</th><th>Harga</th><th>Gambar</th><th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="product-list"></tbody>
+  </table>
 
-  <footer>©2025 SKULLHOSTING - STORESKULLHOST</footer>
-
-  <script src="../supabase.js"></script>
-  <script src="kelola-produk.js"></script>
+  <script type="module" src="admin.js"></script>
+  <script type="module" src="admin-products.js"></script>
 </body>
 </html>
