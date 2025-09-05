@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Logout</title>
+  <script defer src="../supabase.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "../index.html";
+    });
+  </script>
+</head>
+<body>
+  <p>Logging out...</p>
+</body>
+</html>
