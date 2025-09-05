@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StoreSkull - Admin</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/admin.js" defer></script>
+</head>
+<body>
+  <div class="admin-wrap">
+    <div id="admin-login-box" class="card admin-card">
+      <h2>Admin Login</h2>
+      <input id="admin-username" placeholder="Username" />
+      <input id="admin-password" type="password" placeholder="Password" />
+      <button id="admin-login-btn" class="btn">Login</button>
+      <p class="muted small">username: <b>admin</b> password: <b>admin112233</b></p>
+    </div>
+
+    <div id="admin-dashboard" class="hidden">
+      <header class="navbar admin-nav">
+        <div class="brand">Admin • StoreSkull</div>
+        <nav>
+          <a id="admin-home" href="#" class="active">Beranda</a>
+          <a id="admin-products" href="#">Kelola Produk</a>
+          <a id="admin-orders" href="#">Kelola Pesanan</a>
+          <a id="admin-ann" href="#">Announcement</a>
+          <a id="admin-logout" href="#">Logout</a>
+        </nav>
+      </header>
+
+      <main class="container">
+        <section id="admin-view"></section>
+      </main>
+    </div>
+  </div>
+
+  <footer class="site-footer">@2025SKULLHOSTING • STORESKULL</footer>
+</body>
+</html>
